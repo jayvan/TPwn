@@ -1,0 +1,7 @@
+C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\bin\Debug\tPwn.exe
+C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\bin\Debug\tPwn.pdb
+C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.exe
+C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.pdb
+C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.MainForm.resources
+C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.csproj.GenerateResource.Cache

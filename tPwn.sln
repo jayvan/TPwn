@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+# SharpDevelop 3.2.0.5777
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tPwn", "tPwn\tPwn.csproj", "{035DBC7A-38D5-42E7-9E2A-D57980FFEDF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{035DBC7A-38D5-42E7-9E2A-D57980FFEDF5}.Debug|x86.Build.0 = Debug|x86
+		{035DBC7A-38D5-42E7-9E2A-D57980FFEDF5}.Debug|x86.ActiveCfg = Debug|x86
+		{035DBC7A-38D5-42E7-9E2A-D57980FFEDF5}.Release|x86.Build.0 = Release|x86
+		{035DBC7A-38D5-42E7-9E2A-D57980FFEDF5}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+EndGlobal
