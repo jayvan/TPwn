@@ -23,7 +23,7 @@ namespace tPwn
 		const int BOARD_HEIGHT = 19;
 		const int BLOCK_SIZE = 18;
 		const int KEY_DURATION = 55; // How long the keys are held down
-		const int KEY_DELAY = 75;		// How long the bot waits between keys
+		const int KEY_DELAY = 45;		// How long the bot waits between keys
 		int grid_x = 0;
 		int grid_y = 0;
 		
