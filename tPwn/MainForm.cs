@@ -17,8 +17,7 @@ namespace tPwn
 	/// </summary>
 	public partial class MainForm : Form
 	{
-		bool[,] board;
-		bool[,] nextBoard;
+		int[,] board;
 		char nextPiece;
 		const int BOARD_WIDTH = 10;
 		const int BOARD_HEIGHT = 19;
@@ -33,8 +32,7 @@ namespace tPwn
 		
 		public MainForm() {
 			nextPiece = 'x';
-			board = new bool[BOARD_WIDTH, BOARD_HEIGHT];
-			nextBoard = board;
+			board = new int[BOARD_WIDTH, BOARD_HEIGHT];
 			pieces = new Dictionary<char, Tetromino>();
 			AutoX.AU3_Opt("SendAttachMode", 0);
 			AutoX.AU3_Opt("SendKeyDelay", KEY_DELAY);
@@ -82,21 +80,19 @@ namespace tPwn
 			
 			for (int rot = 0; rot < 4; rot++) {
 				for (int col = 0; col <= BOARD_WIDTH - piece.orientations[rot].width; col++ ) {
-					bool[,] result = dropPiece(piece.orientations[rot], col);
+					int[,] result = dropPiece(piece.orientations[rot], col);
 					int tScore = scoreBoard(result);
 					if (tScore > score) {
 						score = tScore;
 						rotation = rot;
 						offset = col - piece.orientations[rot].offset;
-						nextBoard = result;
 					}
 				}
 			}
-			pnlView.Refresh();
 			return new int[] {rotation, offset};
 		}
 		
-		bool[,] clearLine(bool[,] grid, int row) {
+		int[,] clearLine(int[,] grid, int row) {
 			for (int y = row; y < BOARD_HEIGHT - 1; y++) {
 				for (int x = 0; x < BOARD_WIDTH; x++) {
 					grid[x,y] = grid[x,y+1];
@@ -106,8 +102,8 @@ namespace tPwn
 			return grid;
 		}
 		
-		bool[,] dropPiece(Orientation piece, int column) {
-			bool[,] grid = (bool[,])board.Clone();
+		int[,] dropPiece(Orientation piece, int column) {
+			int[,] grid = (int[,])board.Clone();
 			int depth = 3;
 			bool collision = false;
 			
@@ -115,7 +111,7 @@ namespace tPwn
 				depth++;
 				for (int y = 0; y < 4; y++) {
 					for (int x = 0; x < piece.width; x++) {
-						if (BOARD_HEIGHT - depth + y < 0 || (grid[column + x, BOARD_HEIGHT - depth + y] && piece.blocks[x, y])) {
+						if (BOARD_HEIGHT - depth + y < 0 || (grid[column + x, BOARD_HEIGHT - depth + y] != 0 && piece.blocks[x, y])) {
 							collision = true;
 							break;
 						}
@@ -131,43 +127,27 @@ namespace tPwn
 				// Move the piece into the board
 				for (int y = 0; y < 4; y++) {
 					for (int x = 0; x < piece.width; x++) {
-						grid[column + x, BOARD_HEIGHT - depth + y] = grid[column + x, BOARD_HEIGHT - depth + y] || piece.blocks[x, y];
+						if (piece.blocks[x, y])
+							grid[column + x, BOARD_HEIGHT - depth + y] = 2;
 					}
 				}
 			} catch {
-				for (int y = 0; y < BOARD_HEIGHT; y++) {
-					for (int x  = 0; x < BOARD_WIDTH; x++) {
-						if (y % 2 == 0)
-							grid[x, y] = true;
-						else
-							grid[x, y] = false;
-					}
-				}
-				return grid;
+				return new int[BOARD_WIDTH, BOARD_HEIGHT];
 			}
 			
-			for (int y = 0; y < 4; y++) {
-					bool clear = true;
-					for (int x = 0; x < BOARD_WIDTH; x++) {
-						if (!grid[x, BOARD_HEIGHT - depth + 3 - y]) {
-							clear = false;
-							break;
-						}
-					}
-					
-					if (clear) {
-						clearLine(grid, BOARD_HEIGHT - depth + 3 - y);
-					}
-				}
-			
-			//clear the filled lines
 //			for (int y = 0; y < 4; y++) {
-//				bool clear = true;
-//				for (int x = 0; x < BOARD_WIDTH; x++) {
-//					if (grid[x, BOARD_HEIGHT - depth + y]
+//					bool clear = true;
+//					for (int x = 0; x < BOARD_WIDTH; x++) {
+//						if (!grid[x, BOARD_HEIGHT - depth + 3 - y]) {
+//							clear = false;
+//							break;
+//						}
+//					}
+//					
+//					if (clear) {
+//						clearLine(grid, BOARD_HEIGHT - depth + 3 - y);
+//					}
 //				}
-//			}
-			
 			
 			return grid;
 		}
@@ -176,20 +156,20 @@ namespace tPwn
 		// outcomes are moved towards
 		// covered square = -25
 		// height = -1
-		int scoreBoard(bool[,] grid) {
+		int scoreBoard(int[,] grid) {
 			int score = 0;
 			for (int y = 0; y < BOARD_HEIGHT; y++) {
 				for (int x = 0; x < BOARD_WIDTH; x++) {
 					// If a square is empty and the space above is filled penalize
-					if (!grid[x,y] && filled(grid,x,y+1)) score -= 2500;
-					if (grid[x,y]) score -= y;
+					if (grid[x,y] == 0 && filled(grid,x,y+1)) score -= 2500;
+					if (grid[x,y] != 0) score -= y;
 				}
 			}
 			return score;
 		}
 		
-		bool filled(bool[,] grid, int x, int y) {
-			return y >= BOARD_HEIGHT || y < 0 || grid[x,y];
+		bool filled(int[,] grid, int x, int y) {
+			return y >= BOARD_HEIGHT || y < 0 || grid[x,y] != 0;
 		}
 		
 		void readBoard()
@@ -204,7 +184,7 @@ namespace tPwn
 					int b = tmp / 0x0100;
 					tmp %= 0x0100;
 					int c = tmp;
-					board[x,y] = !(a == b && b == c);
+					board[x,y] = !(a == b && b == c) ? 1 : 0;
 				}
 			}
 		}
@@ -251,19 +231,6 @@ namespace tPwn
 			AutoX.AU3_MouseMove(this.Left + int.Parse(txtX.Text), this.Top + int.Parse(txtY.Text), 5);
 		}
 		
-		void PnlViewPaint(object sender, PaintEventArgs e)
-		{
-			Graphics canvas = e.Graphics;
-			for (int y = BOARD_HEIGHT - 1; y >= 0; y--) {
-				for (int x = 0; x < BOARD_WIDTH; x++) {
-					if (nextBoard[x, y])
-						canvas.FillRectangle(Brushes.Green,x*9,(BOARD_HEIGHT-y)*9,9,9);
-					else
-						canvas.FillRectangle(Brushes.Black,x*9,(BOARD_HEIGHT-y)*9,9,9);
-				}
-			}
-		}
-		
 		void BtnKeysClick(object sender, EventArgs e)
 		{
 			AutoX.AU3_Sleep(5000);
@@ -286,8 +253,16 @@ namespace tPwn
 			lblOffset.Text = data[1].ToString();
 			this.Refresh();
 			// Press UP data[0] times
-			for (int i = 0; i < data[0]; i++) {
-				keys = keys + "{UP}";
+			switch (data[0]) {
+					case 1:
+						keys = "x";
+						break;
+					case 2:
+						keys = "xx";
+						break;
+					case 3:
+						keys = "z";
+						break;
 			}
 			
 			bool left = data[1] < 0;

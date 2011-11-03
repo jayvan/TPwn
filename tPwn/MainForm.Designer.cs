@@ -128,7 +128,6 @@ namespace tPwn
 			this.pnlView.Name = "pnlView";
 			this.pnlView.Size = new System.Drawing.Size(90, 180);
 			this.pnlView.TabIndex = 8;
-			this.pnlView.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlViewPaint);
 			// 
 			// btnKeys
 			// 
