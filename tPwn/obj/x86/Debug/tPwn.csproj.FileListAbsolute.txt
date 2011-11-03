@@ -5,3 +5,17 @@ C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\t
 C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.pdb
 C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.MainForm.resources
 C:\Users\Administrator\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.csproj.GenerateResource.Cache
+C:\Users\Justin Vanderheide\Desktop\jayvan-TPwn-8b15533477fadd0257978766a6c64fe9de79c33b\tPwn\bin\Debug\tPwn.exe
+C:\Users\Justin Vanderheide\Desktop\jayvan-TPwn-8b15533477fadd0257978766a6c64fe9de79c33b\tPwn\bin\Debug\tPwn.pdb
+C:\Users\Justin Vanderheide\Desktop\jayvan-TPwn-8b15533477fadd0257978766a6c64fe9de79c33b\tPwn\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Justin Vanderheide\Desktop\jayvan-TPwn-8b15533477fadd0257978766a6c64fe9de79c33b\tPwn\obj\x86\Debug\tPwn.MainForm.resources
+C:\Users\Justin Vanderheide\Desktop\jayvan-TPwn-8b15533477fadd0257978766a6c64fe9de79c33b\tPwn\obj\x86\Debug\tPwn.csproj.GenerateResource.Cache
+C:\Users\Justin Vanderheide\Desktop\jayvan-TPwn-8b15533477fadd0257978766a6c64fe9de79c33b\tPwn\obj\x86\Debug\tPwn.exe
+C:\Users\Justin Vanderheide\Desktop\jayvan-TPwn-8b15533477fadd0257978766a6c64fe9de79c33b\tPwn\obj\x86\Debug\tPwn.pdb
+C:\Users\Justin Vanderheide\Documents\SharpDevelop Projects\tPwn\tPwn\bin\Debug\tPwn.exe
+C:\Users\Justin Vanderheide\Documents\SharpDevelop Projects\tPwn\tPwn\bin\Debug\tPwn.pdb
+C:\Users\Justin Vanderheide\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Justin Vanderheide\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.MainForm.resources
+C:\Users\Justin Vanderheide\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.csproj.GenerateResource.Cache
+C:\Users\Justin Vanderheide\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.exe
+C:\Users\Justin Vanderheide\Documents\SharpDevelop Projects\tPwn\tPwn\obj\x86\Debug\tPwn.pdb

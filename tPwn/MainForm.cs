@@ -20,11 +20,14 @@ namespace tPwn
 		bool[,] board;
 		bool[,] nextBoard;
 		char nextPiece;
-		int BOARD_WIDTH = 10;
-		int BOARD_HEIGHT = 19;
-		int BLOCK_SIZE = 18;
+		const int BOARD_WIDTH = 10;
+		const int BOARD_HEIGHT = 19;
+		const int BLOCK_SIZE = 18;
+		const int KEY_DURATION = 55; // How long the keys are held down
+		const int KEY_DELAY = 75;		// How long the bot waits between keys
 		int grid_x = 0;
 		int grid_y = 0;
+		
 		
 		Dictionary<char, Tetromino> pieces;
 		
@@ -34,6 +37,8 @@ namespace tPwn
 			nextBoard = board;
 			pieces = new Dictionary<char, Tetromino>();
 			AutoX.AU3_Opt("SendAttachMode", 0);
+			AutoX.AU3_Opt("SendKeyDelay", KEY_DELAY);
+			AutoX.AU3_Opt("SendKeyDownDelay", KEY_DURATION);
 			readData();
 			InitializeComponent();
 		}
@@ -91,6 +96,15 @@ namespace tPwn
 			return new int[] {rotation, offset};
 		}
 		
+		bool[,] clearLine(bool[,] grid, int row) {
+			for (int y = row; y < BOARD_HEIGHT - 1; y++) {
+				for (int x = 0; x < BOARD_WIDTH; x++) {
+					grid[x,y] = grid[x,y+1];
+				}
+			}
+			
+			return grid;
+		}
 		
 		bool[,] dropPiece(Orientation piece, int column) {
 			bool[,] grid = (bool[,])board.Clone();
@@ -112,12 +126,48 @@ namespace tPwn
 			
 			depth--; //Return to last acceptable depth
 			
-			// Move the piece into the board
-			for (int y = 0; y < 4; y++) {
-				for (int x = 0; x < piece.width; x++) {
-					grid[column + x, BOARD_HEIGHT - depth + y] = grid[column + x, BOARD_HEIGHT - depth + y] || piece.blocks[x, y];
+			//TODO: FIX THIS FRIGGEN EXCEPTION!!!
+			try {
+				// Move the piece into the board
+				for (int y = 0; y < 4; y++) {
+					for (int x = 0; x < piece.width; x++) {
+						grid[column + x, BOARD_HEIGHT - depth + y] = grid[column + x, BOARD_HEIGHT - depth + y] || piece.blocks[x, y];
+					}
 				}
+			} catch {
+				for (int y = 0; y < BOARD_HEIGHT; y++) {
+					for (int x  = 0; x < BOARD_WIDTH; x++) {
+						if (y % 2 == 0)
+							grid[x, y] = true;
+						else
+							grid[x, y] = false;
+					}
+				}
+				return grid;
 			}
+			
+			for (int y = 0; y < 4; y++) {
+					bool clear = true;
+					for (int x = 0; x < BOARD_WIDTH; x++) {
+						if (!grid[x, BOARD_HEIGHT - depth + 3 - y]) {
+							clear = false;
+							break;
+						}
+					}
+					
+					if (clear) {
+						clearLine(grid, BOARD_HEIGHT - depth + 3 - y);
+					}
+				}
+			
+			//clear the filled lines
+//			for (int y = 0; y < 4; y++) {
+//				bool clear = true;
+//				for (int x = 0; x < BOARD_WIDTH; x++) {
+//					if (grid[x, BOARD_HEIGHT - depth + y]
+//				}
+//			}
+			
 			
 			return grid;
 		}
@@ -230,16 +280,14 @@ namespace tPwn
 		}
 		
 		void dropPiece() {
-			int DELAY_TIME = 500;
-			
+			string keys = "";
 			int[] data = bestMove();
 			lblRotate.Text = data[0].ToString();
 			lblOffset.Text = data[1].ToString();
 			this.Refresh();
 			// Press UP data[0] times
 			for (int i = 0; i < data[0]; i++) {
-				AutoX.AU3_Send("{UP}", 0);
-				AutoX.AU3_Sleep(DELAY_TIME);
+				keys = keys + "{UP}";
 			}
 			
 			bool left = data[1] < 0;
@@ -247,10 +295,10 @@ namespace tPwn
 			string key = left ? "{LEFT}" : "{RIGHT}";
 			// PRESS LEFT OR RIGHT data[1] TIMES HERE
 			for (int i = 0; i < data[1]; i++) {
-				AutoX.AU3_Send(key, 0);
-				AutoX.AU3_Sleep(DELAY_TIME);
+				keys = keys + key;
 			}
-			AutoX.AU3_Send(" ", 0);
+			keys = keys + " ";
+			AutoX.AU3_Send(keys, 0);
 			tmrRun.Start();
 		}
 	}
