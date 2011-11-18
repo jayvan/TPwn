@@ -43,9 +43,8 @@ namespace tPwn
 			this.lblOffset = new System.Windows.Forms.Label();
 			this.lblRotate = new System.Windows.Forms.Label();
 			this.lblColor = new System.Windows.Forms.Label();
-			this.pnlView = new System.Windows.Forms.Panel();
-			this.btnKeys = new System.Windows.Forms.Button();
 			this.tmrRun = new System.Windows.Forms.Timer(this.components);
+			this.lblScore = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// lblNext
@@ -122,35 +121,27 @@ namespace tPwn
 			this.lblColor.Text = "FFFFFF";
 			this.lblColor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// pnlView
-			// 
-			this.pnlView.Location = new System.Drawing.Point(249, 12);
-			this.pnlView.Name = "pnlView";
-			this.pnlView.Size = new System.Drawing.Size(90, 180);
-			this.pnlView.TabIndex = 8;
-			// 
-			// btnKeys
-			// 
-			this.btnKeys.Location = new System.Drawing.Point(12, 165);
-			this.btnKeys.Name = "btnKeys";
-			this.btnKeys.Size = new System.Drawing.Size(75, 23);
-			this.btnKeys.TabIndex = 9;
-			this.btnKeys.Text = "Send Keys";
-			this.btnKeys.UseVisualStyleBackColor = true;
-			this.btnKeys.Click += new System.EventHandler(this.BtnKeysClick);
-			// 
 			// tmrRun
 			// 
-			this.tmrRun.Interval = 250;
+			this.tmrRun.Interval = 1;
 			this.tmrRun.Tick += new System.EventHandler(this.TmrRunTick);
+			// 
+			// lblScore
+			// 
+			this.lblScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblScore.Location = new System.Drawing.Point(12, 138);
+			this.lblScore.Name = "lblScore";
+			this.lblScore.Size = new System.Drawing.Size(183, 50);
+			this.lblScore.TabIndex = 8;
+			this.lblScore.Text = "0";
+			this.lblScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(348, 200);
-			this.Controls.Add(this.btnKeys);
-			this.Controls.Add(this.pnlView);
+			this.ClientSize = new System.Drawing.Size(248, 200);
+			this.Controls.Add(this.lblScore);
 			this.Controls.Add(this.lblColor);
 			this.Controls.Add(this.lblRotate);
 			this.Controls.Add(this.lblOffset);
@@ -166,10 +157,9 @@ namespace tPwn
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Label lblScore;
 		private System.Windows.Forms.Button btnStart;
 		private System.Windows.Forms.Timer tmrRun;
-		private System.Windows.Forms.Button btnKeys;
-		private System.Windows.Forms.Panel pnlView;
 		private System.Windows.Forms.Label lblColor;
 		private System.Windows.Forms.Label lblRotate;
 		private System.Windows.Forms.Label lblOffset;

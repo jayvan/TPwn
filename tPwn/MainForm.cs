@@ -22,8 +22,8 @@ namespace tPwn
 		const int BOARD_WIDTH = 10;
 		const int BOARD_HEIGHT = 19;
 		const int BLOCK_SIZE = 18;
-		const int KEY_DURATION = 55; // How long the keys are held down
-		const int KEY_DELAY = 45;		// How long the bot waits between keys
+		const int KEY_DURATION = 50; // How long the keys are held down
+		const int KEY_DELAY = 55;		// How long the bot waits between keys
 		int grid_x = 0;
 		int grid_y = 0;
 		
@@ -80,8 +80,8 @@ namespace tPwn
 			
 			for (int rot = 0; rot < 4; rot++) {
 				for (int col = 0; col <= BOARD_WIDTH - piece.orientations[rot].width; col++ ) {
-					int[,] result = dropPiece(piece.orientations[rot], col);
-					int tScore = scoreBoard(result);
+					DropResult result = dropPiece(piece.orientations[rot], col);
+					int tScore = scoreBoardTwo(result);
 					if (tScore > score) {
 						score = tScore;
 						rotation = rot;
@@ -89,6 +89,7 @@ namespace tPwn
 					}
 				}
 			}
+			lblScore.Text = score.ToString();
 			return new int[] {rotation, offset};
 		}
 		
@@ -102,7 +103,9 @@ namespace tPwn
 			return grid;
 		}
 		
-		int[,] dropPiece(Orientation piece, int column) {
+		DropResult dropPiece(Orientation piece, int column) {
+			DropResult dr = new DropResult();
+			
 			int[,] grid = (int[,])board.Clone();
 			int depth = 3;
 			bool collision = false;
@@ -132,25 +135,49 @@ namespace tPwn
 					}
 				}
 			} catch {
-				return new int[BOARD_WIDTH, BOARD_HEIGHT];
+				dr.grid = new int[BOARD_WIDTH, BOARD_HEIGHT];
+				dr.clears = -100;
+				return dr;
 			}
 			
-//			for (int y = 0; y < 4; y++) {
-//					bool clear = true;
-//					for (int x = 0; x < BOARD_WIDTH; x++) {
-//						if (!grid[x, BOARD_HEIGHT - depth + 3 - y]) {
-//							clear = false;
-//							break;
-//						}
-//					}
-//					
-//					if (clear) {
-//						clearLine(grid, BOARD_HEIGHT - depth + 3 - y);
-//					}
-//				}
-			
-			return grid;
+			for (int y = 0; y < 4; y++) {
+				if (BOARD_HEIGHT - depth + 3 - y >= BOARD_HEIGHT) continue;
+				bool clear = true;
+					for (int x = 0; x < BOARD_WIDTH; x++) {
+						
+						if (grid[x, BOARD_HEIGHT - depth + 3 - y] == 0) {
+							clear = false;
+							break;
+						}
+					}
+					
+					if (clear) {
+						dr.clears++;
+						clearLine(grid, BOARD_HEIGHT - depth + 3 - y);
+					}
+				}
+			dr.grid = grid;
+			return dr;
 		}
+		
+		int scoreBoardTwo(DropResult result) {
+			int score = result.clears * 4;
+			int height = 0;
+			for (int y = 0; y < BOARD_HEIGHT; y++) {
+				for (int x = 0 ; x < BOARD_WIDTH; x++) {
+					if (result.grid[x,y] == 2) {
+						if (old(result.grid, x - 1, y)) score++;
+						if (old(result.grid, x + 1, y)) score++;
+						if (old(result.grid, x, y - 1)) score++;
+						if (old(result.grid, x, y + 1)) score++;
+						if (!filled(result.grid, x, y - 1)) score -= 5;;
+						height = y;
+					}
+				}
+			}
+			
+			return score - height;
+    }
 		
 		// Determine the "score" of a board so that more desireable
 		// outcomes are moved towards
@@ -169,7 +196,11 @@ namespace tPwn
 		}
 		
 		bool filled(int[,] grid, int x, int y) {
-			return y >= BOARD_HEIGHT || y < 0 || grid[x,y] != 0;
+			return y >= BOARD_HEIGHT || y < 0 || x < 0 || x >= BOARD_WIDTH || grid[x,y] != 0;
+		}
+		
+		bool old(int[,] grid, int x, int y) {
+			return y >= BOARD_HEIGHT || y < 0 || x < 0 || x >= BOARD_WIDTH || grid[x,y] == 1;
 		}
 		
 		void readBoard()
